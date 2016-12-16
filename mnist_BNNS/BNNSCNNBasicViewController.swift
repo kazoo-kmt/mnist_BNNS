@@ -13,9 +13,6 @@ import UIKit
 //import MetalPerformanceShaders
 
 class BNNSCNNBasicViewController: UIViewController {
-
-//    var commandQueue: MTLCommandQueue!
-//    var device: MTLDevice!
     
     // Networks we have
     var network: MnistNet!
@@ -34,23 +31,8 @@ class BNNSCNNBasicViewController: UIViewController {
         
         clearBtn.isHidden = true
         predictionLabel.text = nil
-
-        // Load default device.
-//        device = MTLCreateSystemDefaultDevice()
-//        
-//        // Make sure the current device supports MetalPerformanceShaders.
-//        guard MPSSupportsMTLDevice(device) else {
-//            showAlert(title: "Not Supported", message: "MetalPerformanceShaders is not supported on current device", handler: { (action) in
-//                self.navigationController!.popViewController(animated: true)
-//            })
-//            return
-//        }
-//        
-//        // Create new command queue.
-//        commandQueue = device!.makeCommandQueue()
       
         // initialize the networks we shall use to detect digits
-//        network  = MNISTDeepCNN(withCommandQueue: commandQueue)
         network = MnistNet()
     }
     
@@ -69,17 +51,7 @@ class BNNSCNNBasicViewController: UIViewController {
         // validate NeuralNetwork was initialized properly
         assert(network != nil)
         
-//        // putting input into MTLTexture in the MPSImage
-//        network.srcImage.texture.replace(region: MTLRegion( origin: MTLOrigin(x: 0, y: 0, z: 0),
-//                                                        size: MTLSize(width: mnistInputWidth, height: mnistInputHeight, depth: 1)),
-//                                             mipmapLevel: 0,
-//                                             slice: 0,
-//                                             withBytes: context!.data!,
-//                                             bytesPerRow: mnistInputWidth,
-//                                             bytesPerImage: 0)
-
         // run the network forward pass
-//        let imageData = Data(bytes: context!.data!, count: mnistInputWidth * mnistInputHeight * MemoryLayout<Float>.size)
         let imageData = Data(bytes: context!.data!, count: mnistInputWidth * mnistInputHeight)
         let label = network.predict(image: imageData)
         

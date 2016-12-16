@@ -96,7 +96,6 @@ class BnnsBuilder {
     private var kernel: (width: Int, height: Int)!
     private var stride = (x: 1, y: 1)
     private var activation = BNNSActivationFunctionRectifiedLinear
-//    private var activation: BNNSActivationFunction?
   
     func shape(width: Int, height: Int, channels: Int) -> Self {
         let shape = BnnsShape(width: width, height: height, channels: channels)
@@ -124,12 +123,10 @@ class BnnsBuilder {
     }
     
     func activation(function: BNNSActivationFunction) -> Self {
-//    func activation(function: BNNSActivationFunction?) -> Self {
         activation = function
         return self
     }
     
-//    func convolve(weights: [Float32], bias: [Float32]) -> Self {
     func convolve(weights: UnsafePointer<Float32>, bias: UnsafePointer<Float32>) -> Self {
         let desc = ConvolutionLayerDescriptor()
         desc.dataType = dataType
@@ -190,8 +187,6 @@ class BnnsBuilder {
     private class ConvolutionLayerDescriptor : LayerDescriptor {
         var kernel: (width: Int, height: Int)!
         var stride: (x: Int, y: Int)!
-//        var weights: [Float32]!
-//        var bias: [Float32]!
         var weights: UnsafePointer<Float>!
         var bias: UnsafePointer<Float>!
         var activation: BNNSActivationFunction!
@@ -251,12 +246,9 @@ class BnnsBuilder {
     }
     
     private class FullyConnectedLayerDescriptor : LayerDescriptor {
-//        var weights: [Float32]!
-//        var bias: [Float32]!
         var weights: UnsafePointer<Float32>!
         var bias: UnsafePointer<Float32>!
         var activation: BNNSActivationFunction!
-//        var activation: BNNSActivationFunction?
       
         override func build() -> BnnsFilter? {
             
@@ -268,18 +260,8 @@ class BnnsBuilder {
 
             var filterParams = defaultFilterParameters()
           
-//            var layerParams: BNNSFullyConnectedLayerParameters
-//            if (activation != nil) {
             let activ = BNNSActivation(function: activation, alpha: 0, beta: 0)
             var layerParams = BNNSFullyConnectedLayerParameters(in_size: input.size, out_size: output.size, weights: weights_data, bias: bias_data, activation: activ)
-//            } else {
-//              // In case you don't want to put Relu after fully connected layer
-//              layerParams = BNNSFullyConnectedLayerParameters()
-//              layerParams.in_size = input.size
-//              layerParams.out_size = output.size
-//              layerParams.weights = weights_data
-//              layerParams.bias = bias_data
-//            }
           
             guard let layer = BNNSFilterCreateFullyConnectedLayer(&hiddenIn, &hiddenOut, &layerParams, &filterParams)
                 else { return nil }

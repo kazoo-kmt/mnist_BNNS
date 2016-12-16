@@ -29,7 +29,6 @@ class MnistNet {
   }
   
   private class func readParams(kernelWidth: UInt, kernelHeight: UInt, inputFeatureChannels: UInt, outputFeatureChannels: UInt, kernelParamsBinaryName: String) -> Array<Array<Float32>> {
-//  private class func readParams(kernelWidth: UInt, kernelHeight: UInt, inputFeatureChannels: UInt, outputFeatureChannels: UInt, kernelParamsBinaryName: String) -> [UnsafePointer<Float32>] {
 
       // calculate the size of weights and bias required to be memory mapped into memory
       let sizeWeights = inputFeatureChannels * kernelHeight * kernelWidth * outputFeatureChannels * UInt(MemoryLayout<Float>.size)
@@ -99,28 +98,10 @@ class MnistNet {
             .connect(weights: fc1_params[0], bias: fc1_params[1])
 
             .shape(size: 128)
-//            .shape(width: 1, height: 1, channels: 128)
             .activation(function: BNNSActivationFunctionSigmoid)  // Note: It should be softmax, but used sigmoid because BNNS hasn't provided softmax yet.
             .connect(weights: fc2_params[0], bias: fc2_params[1])
           
             .shape(size: 10)
-//            .shape(width: 1, height: 1, channels: 10)
-          /*
-            .shape(width: 28, height: 28, channels: 1)
-            .kernel(width: 5, height: 5)
-            .convolve(weights: conv1_params[0], bias: conv1_params[1])
-            .shape(width: 28, height: 28, channels: 32)
-            .maxpool(width: 2, height: 2)
-            .shape(width: 14, height: 14, channels: 32)
-            .convolve(weights: conv2_params[0], bias: conv2_params[1])
-            .shape(width: 14, height: 14, channels: 64)
-            .maxpool(width: 2, height: 2)
-            .shape(width: 7, height: 7, channels: 64)
-            .connect(weights: fc1_params[0], bias: fc1_params[1])
-            .shape(size: 1024)
-            .connect(weights: fc2_params[0], bias: fc2_params[1])
-            .shape(size: 10)
-          */
             .build()!
     }
     
